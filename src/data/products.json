@@ -1,0 +1,195 @@
+[
+  {
+    "title": "patin",
+    "description": "patineta profecional",
+    "code": "2pb",
+    "price": "154",
+    "status": true,
+    "stock": 50,
+    "category": "juguete",
+    "thumbnails": [
+      " ruta/imagen1.jpg"
+    ],
+    "id": "2"
+  },
+  {
+    "title": "bicicleta ",
+    "description": "rodado 19",
+    "code": "2pb",
+    "price": 10000,
+    "status": true,
+    "stock": 100,
+    "category": "juguete",
+    "thumbnails": [
+      " ruta/imagen1.jpg"
+    ],
+    "id": "3"
+  },
+  {
+    "title": "computadora ",
+    "description": "completo",
+    "code": "2pb",
+    "price": 100,
+    "status": true,
+    "stock": 100,
+    "category": "informatica",
+    "thumbnails": [
+      " ruta/imagen1.jpg"
+    ],
+    "id": "4"
+  },
+  {
+    "title": "code ",
+    "price": 12,
+    "description": "hola",
+    "code": "123",
+    "status": "true",
+    "stock": "12",
+    "category": "juego",
+    "thumbnails": "aaa",
+    "id": "5"
+  },
+  {
+    "title": "code ",
+    "price": 12,
+    "description": "hola",
+    "code": "123",
+    "status": "true",
+    "stock": "12",
+    "category": "juego",
+    "thumbnails": "aaa",
+    "id": "6"
+  },
+  {
+    "title": "code ",
+    "price": 12,
+    "description": "hola",
+    "code": "123",
+    "status": "true",
+    "stock": "12",
+    "category": "juego",
+    "thumbnails": "aaa",
+    "id": "7"
+  },
+  {
+    "title": "code ",
+    "price": 11,
+    "description": "casa",
+    "code": "123",
+    "status": "true",
+    "stock": "13",
+    "category": "juego",
+    "thumbnails": "aaa",
+    "id": "8"
+  },
+  {
+    "title": "code ",
+    "price": 11,
+    "description": "casa",
+    "code": "123",
+    "status": "true",
+    "stock": "13",
+    "category": "juego",
+    "thumbnails": "aaa",
+    "id": "9"
+  },
+  {
+    "title": "hola",
+    "price": 12,
+    "description": "juegar",
+    "code": "14",
+    "status": "true",
+    "stock": "50",
+    "category": "juegos",
+    "thumbnails": "archivos",
+    "id": "10"
+  },
+  {
+    "title": "caca",
+    "price": 14,
+    "description": "cola",
+    "code": "1666",
+    "status": "true",
+    "stock": "100",
+    "category": "caracol",
+    "thumbnails": "archivo",
+    "id": "11"
+  },
+  {
+    "title": "goku",
+    "price": 111,
+    "description": "juguete",
+    "code": "155",
+    "status": "true",
+    "stock": "100",
+    "category": "juguete",
+    "thumbnails": "archivos",
+    "id": "12"
+  },
+  {
+    "title": "vegueta",
+    "price": "144",
+    "description": "holaaaa",
+    "code": "145",
+    "status": "true",
+    "stock": "100",
+    "category": "juguete",
+    "thumbnails": "archivos",
+    "id": "13"
+  },
+  {
+    "title": "casino",
+    "price": 14000,
+    "description": "ruleta Rusa",
+    "code": "123",
+    "status": "true",
+    "stock": "14",
+    "category": "Juguetes",
+    "thumbnails": "Archivos",
+    "id": "14"
+  },
+  {
+    "title": "code ",
+    "price": 123,
+    "description": "hola",
+    "code": "123",
+    "status": "true",
+    "stock": "123",
+    "category": "Juguetes",
+    "thumbnails": "archivos",
+    "id": "15"
+  },
+  {
+    "title": "play5",
+    "price": 143,
+    "description": "juguete",
+    "code": "123",
+    "status": "true",
+    "stock": "1321",
+    "category": "Juguetes",
+    "thumbnails": "Archivos",
+    "id": "16"
+  },
+  {
+    "title": "casa",
+    "price": 123,
+    "description": "juguete",
+    "code": "1666",
+    "status": "true",
+    "stock": "6666",
+    "category": "caracol",
+    "thumbnails": "Archivos",
+    "id": "17"
+  },
+  {
+    "title": "playStation 4",
+    "price": 10000,
+    "description": "video juego",
+    "code": "11111",
+    "status": "true",
+    "stock": "1000",
+    "category": "entretenimiento",
+    "thumbnails": "archivos.jpg",
+    "id": "18"
+  }
+]

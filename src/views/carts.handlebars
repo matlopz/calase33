@@ -1,0 +1,18 @@
+<body>
+  
+
+<h2>Carrito de Compras</h2>
+<ul id="cartsList">
+  {{#each cartRender}}
+  <li>
+    <strong>ID:</strong> {{product._id}}<br>
+    <strong>Título:</strong>  {{product.title}}<br>
+    <strong>Precio:</strong> ${{product.price}}<br>
+    Cantidad: <span id="quantity_{{product._id}}">{{quantity}}</span>
+    <button onclick="decrementQuantity('{{product._id}}')">-</button>
+    <button onclick="incrementQuantity('{{product._id}}')">+</button>
+  </li>
+  {{/each}}
+</ul>
+<script src="/js/carrito.js"></script>
+</body>

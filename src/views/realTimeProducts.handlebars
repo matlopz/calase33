@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tiempo Real </title>
+  <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+  <h1>Crear Productos en Tiempo Real</h1>
+  <form id="addProductForm">
+    
+    <label for="productTitle">Title:</label>
+    <input type="text" id="productTitle" required><br>
+    <label for="productPrice">Price:</label>
+    <input type="number" id="productPrice" required><br>
+    <label for="productDescription">Description:</label>
+    <input type="text" id="productDescription" required><br>
+    <label for="productCode">Code:</label>
+    <input type="text" id="productCode" required><br>   
+    <label for="productStatus">Status:</label>
+    <input type="text" id="productStatus" required><br>
+    <label for="productStock">Stock:</label>
+    <input type="number" id="productStock" required><br>
+    <label for="productCategory">Category:</label>
+    <input type="text" id="productCategory" required><br>
+    <label for="productThumbnails">Thumbnails:</label>
+    <input type="text" id="productThumbnails" required><br>
+    <button type="submit">Agregar Producto</button><br>
+  </form>
+  <br>
+  <a href="/api/users">Ir al chat</a>
+
+  <br>
+  <div id="editAndDeleteForms">
+<form id="editProductByIdForm">
+  <h2>Editar Producto por ID</h2>
+  <label for="productId">ID del Producto:</label>
+  <input type="text" id="productId" required><br>
+  <label for="newTitle">Nuevo Título:</label>
+  <input type="text" id="newTitle" required><br>
+  <label for="newPrice">Nuevo Precio:</label>
+  <input type="number" id="newPrice" required><br>
+  <!-- Agrega otros campos de edición aquí -->
+  <button id="editProductByIdBtn">Editar Producto</button>
+</form>
+
+<form id="deleteProductByIdForm">
+      <h2>Borrar Producto por ID</h2>
+      <label for="deleteProductId">ID del Producto:</label>
+      <input type="text" id="deleteProductId" required><br>
+      <button id="deleteProductByIdBtn">Borrar Producto</button>
+    </form>
+
+ </div>
+  
+ <h1>Productos en Tiempo Real</h1>
+ <ul id="productList">
+    {{#each products}}
+      <li>
+        <strong>Titulo:</strong> <li>{{this.title}}</li><br>
+        <strong>Descripción:</strong> {{description}}<br>
+        <strong>Código:</strong> {{code}}<br>
+        <strong>Precio:</strong> ${{price}}<br>
+        <strong>Estado:</strong> {{status}}<br>
+        <strong>Stock:</strong> {{stock}}<br>
+        <strong>Categoría:</strong> {{category}}<br>
+        <strong>Thumbnails:</strong> {{thumbnails}}<br>
+        <br>
+       
+      </li>
+      <br>
+    {{/each}}
+  </ul>
+
+ 
+  <script src="/socket.io/socket.io.js"></script>
+ 
+  <script src="/js/products.js"></script>
+</body>
+</html>

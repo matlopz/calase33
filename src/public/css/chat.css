@@ -1,0 +1,48 @@
+/* chat.css */
+
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Estilos para la lista de mensajes */
+  #messageList {
+    list-style: none;
+    padding: 0;
+  }
+  
+  #messageList li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+  }
+  
+  /* Estilos para el formulario de chat */
+  #chatForm {
+    margin-top: 20px;
+  }
+  
+  #messageInput {
+    width: 80%;
+    padding: 8px;
+  }
+  
+  #chatForm button {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  #chatForm button:hover {
+    background-color: #0056b3;
+  }
+  

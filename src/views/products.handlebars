@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tiempo Real</title>
+  <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+  {{usuario}}
+<a href="/views/logout"><button type="submit" class="btn btn-success">Cerrar Session</button></a>
+
+   
+
+  <h1>Productos </h1>
+
+  <ul id="productList">
+  </ul>
+  <br>
+  <form action="/carts" method="GET">
+
+  </form>
+ <br>
+ <button id="verCarritoButton">Ver Carrito</button>
+
+
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/cart.js"></script>
+</body>
+</html>

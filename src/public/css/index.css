@@ -1,0 +1,98 @@
+/* Estilos generales */
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+/* Formularios */
+form {
+  margin-bottom: 20px;
+}
+
+form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+form input,
+form select,
+form textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+form button {
+  padding: 8px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+form button[type="submit"] {
+  background-color: #007BFF;
+}
+
+form button[type="button"] {
+  background-color: #F44336;
+}
+
+/* Lista de productos */
+#productList {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#productList li {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.editProductBtn,
+.deleteProductBtn {
+  padding: 5px 10px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.deleteProductBtn {
+  background-color: #F44336;
+}
+
+/* Estilos para los formularios Editar y Borrar */
+#editAndDeleteForms {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+#editAndDeleteForms form {
+  flex: 1;
+}

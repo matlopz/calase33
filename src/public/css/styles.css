@@ -1,0 +1,80 @@
+body {
+/* Estilo para los mensajes propios */
+.own-message {
+    background-color: #DCF8C6; /* Color de fondo para los mensajes propios */
+    color: #333; /* Color del texto para los mensajes propios */
+    padding: 8px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+  /* Estilo para los mensajes de otros usuarios */
+  .other-message {
+    background-color: #F0F0F0; /* Color de fondo para los mensajes de otros usuarios */
+    color: #333; /* Color del texto para los mensajes de otros usuarios */
+    padding: 8px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  #chatContainer {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  #chatTitle {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  #messagelogs {
+    border: 1px solid #ccc;
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+  }
+  
+  #messagelogs p {
+    margin: 0;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  
+  #messagelogs .own-message {
+    background-color: #DCF8C6;
+    text-align: right;
+  }
+  
+  #messagelogs .other-message {
+    background-color: #ECE5DD;
+    text-align: left;
+  }
+  
+  #chatBox {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  #sendButton {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
