@@ -61,7 +61,7 @@ async function deleteProductAndReload(productId, cartId) {
         });
 
         if (response.ok) {
-            // Eliminación exitosa, recarga la página para reflejar los cambios
+            
             setTimeout(() => {
                 window.location.reload();
             }, 100);
@@ -130,10 +130,10 @@ async function finalizePurchase() {
         });
   
         if (response.ok) {
-          // Obtén los datos del resumen de la compra desde la respuesta del servidor
+       
           const summary = await response.json();
   
-          // La compra se completó con éxito, muestra el modal con el resumen de la compra
+          
           const summaryModal = document.getElementById('purchaseSummaryModal');
           const closeSummaryModal = document.getElementById('closeSummaryModal');
           const modalContent = document.querySelector('.modal-content');
@@ -149,12 +149,12 @@ async function finalizePurchase() {
           }
           
           // Agrega el contenido del resumen de la compra
-          // Agrega el contenido del resumen de la compra
+       
 const totalAmount = document.createElement('p');
 totalAmount.textContent = `Total a Pagar: $${summary.ticket.amount}`;
 modalContent.appendChild(totalAmount);
 
-// Añade los otros detalles del ticket
+
 const code = document.createElement('p');
 code.textContent = `Código de Ticket: ${summary.ticket.code}`;
 modalContent.appendChild(code);
@@ -181,7 +181,7 @@ modalContent.appendChild(products);
           summaryModal.style.display = 'block';
         } else {
           console.error('Error al finalizar la compra');
-          // Puedes mostrar un mensaje de error al usuario si lo deseas
+          
         }
       } catch (error) {
         console.error('Error de red al finalizar la compra:', error);

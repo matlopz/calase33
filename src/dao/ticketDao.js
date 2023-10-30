@@ -1,4 +1,4 @@
-const Ticket = require('../models/ticket.models') // Importa el modelo de Ticket
+const Ticket = require('../models/ticket.models') 
 
 const TicketDAO = {
   async createTicket(ticketData) {

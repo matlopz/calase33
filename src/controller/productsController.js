@@ -3,11 +3,12 @@ const router = express.Router();
 const productsService= require('../services/productsService');
 const { authToken } = require('../utils/jwt');
 
-router.get('/',authToken ,async (req, res) => {
+
+router.get('/' ,async (req, res) => {
     try {
       console.log('GET Products - Inicio');
       
-      const products = await productsService.getAllProducts({})
+      const products = await productsService.getAllProduct({})
       console.log('GET Products - Productos encontrados:', products);
 
       return res.json({products})
@@ -67,6 +68,11 @@ router.delete('/:pid', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
+});
+router.get('/mockingproducts', (req, res) => {
+  const { numProduct=1 } = req.query
+  const products = generateProducts(numProduct);
+  res.json(products);
 });
 
 module.exports = router;
