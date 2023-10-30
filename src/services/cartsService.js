@@ -1,6 +1,7 @@
 const CartRepository = require('../repositories/cartRepository');
 const productsService = require('./productsService');
 const HTTP_STATUS_CODE = require('../constants/error.constants');
+const TicketService = require('./ticketService');
 
 const cartsService = {
   async getAllCarts() {
@@ -179,7 +180,51 @@ const cartsService = {
     } catch (error) {
         throw new Error('Error al eliminar producto del carrito: ' + error.message);
     }
+},
+
+async purchaseCart(cart, user) {
+  if (!cart || !user) {
+    throw new Error('Datos de entrada no válidos');
+  }
+
+  const cartProducts = cart.products;
+  const productsNotPurchased = [];
+
+  for (const cartProduct of cartProducts) {
+    const product = await productsService.getProductById(cartProduct.product);
+
+    if (!product) {
+      productsNotPurchased.push(cartProduct.product);
+    } else if (product.stock >= cartProduct.quantity) {
+      product.stock -= cartProduct.quantity;
+      await product.save();
+    } else {
+      productsNotPurchased.push(cartProduct.product);
+    }
+  }
+
+  // Inicializa ticket como un objeto vacío
+  let ticket = {};
+
+  // Genera el ticket solo si se compraron productos
+  if (cartProducts.length > productsNotPurchased.length) {
+    ticket = await TicketService.generateTicket(cart, user);
+    console.log('que tiene tiket del lado de cart.',ticket)
+  }
+
+
+  // Filtra los productos que no pudieron comprarse
+  const updatedCartProducts = cartProducts.filter((cartProduct) => {
+    return !productsNotPurchased.includes(cartProduct.product);
+  });
+
+  cart.products = updatedCartProducts;
+
+  await CartRepository.saveCart(cart);
+
+  return { productsNotPurchased, ticket };
 }
+
 
 };
 

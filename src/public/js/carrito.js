@@ -1,3 +1,17 @@
+const fetchData = async () => {
+    const authToken = localStorage.getItem('authToken');
+    console.log('que tiene authToken', authToken);
+
+    if (!authToken) {
+        console.log('No se encontró un token de autorización en el almacenamiento local.');
+        return;
+    }
+ 
+
+
+};
+
+
 async function incrementQuantity(productId) {
     const quantityElement = document.getElementById(`quantity_${productId}`);
     let currentQuantity = parseInt(quantityElement.textContent);
@@ -15,6 +29,7 @@ async function incrementQuantity(productId) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
                 },
                 body: JSON.stringify({ cartId: cartId }),
             });
@@ -40,6 +55,7 @@ async function deleteProductAndReload(productId, cartId) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
             },
             body: JSON.stringify({ cartId: cartId }),
         });
@@ -82,6 +98,7 @@ async function decrementQuantity(productId) {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
                     },
                     body: JSON.stringify({ cartId: cartId }),
                 });
@@ -96,5 +113,84 @@ async function decrementQuantity(productId) {
     }
 }
 
+async function finalizePurchase() {
+    const urlActual = window.location.href;
+    const partesURL = urlActual.split('/');
+    const cartId = partesURL[partesURL.length - 1];
+    
+    if (cartId) {
+      try {
+        const response = await fetch(`/views/carts/${cartId}/purchase`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+          },
+          body: JSON.stringify({ cartId: cartId }),
+        });
+  
+        if (response.ok) {
+          // Obtén los datos del resumen de la compra desde la respuesta del servidor
+          const summary = await response.json();
+  
+          // La compra se completó con éxito, muestra el modal con el resumen de la compra
+          const summaryModal = document.getElementById('purchaseSummaryModal');
+          const closeSummaryModal = document.getElementById('closeSummaryModal');
+          const modalContent = document.querySelector('.modal-content');
+          
+          closeSummaryModal.onclick = function() {
+            summaryModal.style.display = 'none';
+          }
+          
+          window.onclick = function(event) {
+            if (event.target == summaryModal) {
+              summaryModal.style.display = 'none';
+            }
+          }
+          
+          // Agrega el contenido del resumen de la compra
+          // Agrega el contenido del resumen de la compra
+const totalAmount = document.createElement('p');
+totalAmount.textContent = `Total a Pagar: $${summary.ticket.amount}`;
+modalContent.appendChild(totalAmount);
 
+// Añade los otros detalles del ticket
+const code = document.createElement('p');
+code.textContent = `Código de Ticket: ${summary.ticket.code}`;
+modalContent.appendChild(code);
+
+const purchaseDatetime = document.createElement('p');
+purchaseDatetime.textContent = `Fecha de Compra: ${new Date(summary.ticket.purchase_datetime).toLocaleString()}`;
+modalContent.appendChild(purchaseDatetime);
+
+const purchaser = document.createElement('p');
+purchaser.textContent = `Comprador: ${summary.ticket.purchaser}`;
+modalContent.appendChild(purchaser);
+
+// Añade los productos del ticket
+const products = document.createElement('ul');
+products.textContent = 'Productos:';
+summary.ticket.products.forEach((product) => {
+  const productItem = document.createElement('li');
+  productItem.textContent = `Nombre: ${product.product.title}, Precio: $${product.product.price}, Cantidad: ${product.quantity}`;
+  products.appendChild(productItem);
+});
+modalContent.appendChild(products);
+
+          
+          summaryModal.style.display = 'block';
+        } else {
+          console.error('Error al finalizar la compra');
+          // Puedes mostrar un mensaje de error al usuario si lo deseas
+        }
+      } catch (error) {
+        console.error('Error de red al finalizar la compra:', error);
+      }
+    } else {
+      console.log('cartId es undefined. Verifica la URL.');
+    }
+  }
+  
+  
+  
 

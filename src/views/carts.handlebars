@@ -1,18 +1,32 @@
+<head>
+  <!-- ... Otros elementos head ... -->
+  <link rel="stylesheet" href="/css/modal.css">
+</head>
 <body>
-  
+  <h2>Carrito de Compras</h2>
+  <ul id="cartsList">
+    {{#each cartRender}}
+    <li>
+      <strong>ID:</strong> {{product._id}}<br>
+      <strong>Título:</strong> {{product.title}}<br>
+      <strong>Precio:</strong> ${{product.price}}<br>
+      Cantidad: <span id="quantity_{{product._id}}">{{quantity}}</span>
+      <button onclick="decrementQuantity('{{product._id}}')">-</button>
+      <button onclick="incrementQuantity('{{product._id}}')">+</button>
+    </li>
+    {{/each}}
+  </ul>
+  <button id="finalizePurchaseButton" onclick="finalizePurchase()">Finalizar Compra</button>
+<!-- Agrega este div oculto para el resumen de la compra -->
+<div id="purchaseSummaryModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeSummaryModal">&times;</span>
+    <h3>Resumen de la Compra</h3>
+    <!-- Agrega aquí los detalles del resumen de la compra -->
+  </div>
+</div>
 
-<h2>Carrito de Compras</h2>
-<ul id="cartsList">
-  {{#each cartRender}}
-  <li>
-    <strong>ID:</strong> {{product._id}}<br>
-    <strong>Título:</strong>  {{product.title}}<br>
-    <strong>Precio:</strong> ${{product.price}}<br>
-    Cantidad: <span id="quantity_{{product._id}}">{{quantity}}</span>
-    <button onclick="decrementQuantity('{{product._id}}')">-</button>
-    <button onclick="incrementQuantity('{{product._id}}')">+</button>
-  </li>
-  {{/each}}
-</ul>
-<script src="/js/carrito.js"></script>
+
+
+  <script src="/js/carrito.js"></script>
 </body>
