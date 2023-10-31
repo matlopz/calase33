@@ -36,42 +36,49 @@ const cartsService = {
 
   async addProductToCart(cartId, productId) {
     try {
-      console.log('Dato de entrada', cartId);
-
-     
       const product = await productsService.getProductById(productId);
-
+  
       if (!product) {
         return { error: 'El producto no existe', statusCode: HTTP_STATUS_CODE.NOT_FOUND };
       }
-
+  
       const cart = await CartRepository.getCartById(cartId);
-      console.log('Mi carrito ahora tiene', cart);
-
+  
       if (!cart) {
         return { error: 'El carrito no existe' };
       }
-
+  
       const existingProduct = cart.products.find(item => item.product.equals(productId));
-
+  
       if (existingProduct) {
-        let quantity = existingProduct.quantity;
-        quantity += 1;
-        console.log('Sí tiene un producto agregado');
-        existingProduct.quantity = quantity;
+        if (product.stock > 0) {
+          // Solo si el producto tiene stock disponible, se agrega al carrito
+          cart.products.push({ product: productId, quantity: 1 });
+          product.stock -= 1; // Se reduce el stock
+          await product.save();
+        } else {
+          console.log('El producto no tiene stock disponible');
+          return { error: 'El producto no tiene stock disponible' };
+        }
       } else {
-        cart.products.push({ product: productId, quantity: 1 });
-        console.log('No tiene un producto agregado');
+        if (product.stock > 0) {
+          // Si el producto tiene stock disponible, se agrega al carrito.
+          cart.products.push({ product: productId, quantity: 1 });
+          product.stock -= 1; // Se reduce el stock
+          await product.save();
+        } else {
+          console.log('El producto no tiene stock disponible');
+          return { error: 'El producto no tiene stock disponible' };
+        }
       }
-
+  
       try {
         await CartRepository.saveCart(cart);
-        console.log('Carrito guardado con éxito.');
       } catch (error) {
         console.error('Error al guardar el carrito:', error);
         throw new Error('Error al guardar el carrito');
       }
-
+  
       return {
         addedProduct: existingProduct || cart.products[cart.products.length - 1],
         isNewProduct: !existingProduct,
@@ -79,7 +86,10 @@ const cartsService = {
     } catch (error) {
       throw new Error('Error al agregar producto al carrito: ' + error.message);
     }
-  },
+  }
+  
+  ,
+  
 
   async incrementProductQuantity(cartId, productId) {
     try {
