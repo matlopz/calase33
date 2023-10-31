@@ -203,31 +203,25 @@ async purchaseCart(cart, user) {
     }
   }
 
-  // Inicializa ticket como un objeto vacío
-  let ticket = {};
-
-  // Genera el ticket solo si se compraron productos
-  if (cartProducts.length > productsNotPurchased.length) {
-    ticket = await TicketService.generateTicket(cart, user);
-    console.log('que tiene tiket del lado de cart.',ticket)
-  }
-
-
-  // Filtra los productos que no pudieron comprarse
+  
   const updatedCartProducts = cartProducts.filter((cartProduct) => {
     return !productsNotPurchased.includes(cartProduct.product);
   });
 
   cart.products = updatedCartProducts;
 
+
+  let ticket = null;
+  if (cartProducts.length > productsNotPurchased.length) {
+    ticket = await TicketService.generateTicket(cart, user);
+    console.log('que tiene tiket del lado de cart.', ticket);
+  }
+
   await CartRepository.saveCart(cart);
 
   return { productsNotPurchased, ticket };
 }
 
-
-};
-
-
+}
 
 module.exports = cartsService;
