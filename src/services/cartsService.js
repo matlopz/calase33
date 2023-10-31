@@ -54,7 +54,7 @@ const cartsService = {
         if (product.stock > 0) {
           // Solo si el producto tiene stock disponible, se agrega al carrito
           cart.products.push({ product: productId, quantity: 1 });
-          product.stock -= 1; // Se reduce el stock
+          product.stock -= 1; 
           await product.save();
         } else {
           console.log('El producto no tiene stock disponible');
@@ -64,7 +64,7 @@ const cartsService = {
         if (product.stock > 0) {
           // Si el producto tiene stock disponible, se agrega al carrito.
           cart.products.push({ product: productId, quantity: 1 });
-          product.stock -= 1; // Se reduce el stock
+          product.stock -= 1; 
           await product.save();
         } else {
           console.log('El producto no tiene stock disponible');
