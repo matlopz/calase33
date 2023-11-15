@@ -8,10 +8,10 @@ const { comparePassword } = require('../utils/bcrypts');
 const cartsModels = require('../models/carts.Models');
 const cookieExtractor = require('../utils/cookie.extractor');
 const UserDto = require('../dto/user.dto')
-const usuarioService = new UsuarioService()
 const LocalStrategy = local.Strategy
 const JWTStrategy = jwt.Strategy
 const ExtractJwt = jwt.ExtractJwt
+const usuarioService = new UsuarioService()
 
 const initializedPassport = () => {
   passport.use('register', new LocalStrategy(

@@ -1,9 +1,17 @@
 const CartFactory = require('../factories/cartFactory');
 
+
 class CartRepository {
   constructor() {
-    this.cartFactory = new CartFactory();
+    this.cartFactory = CartFactory.createCartDAO();
   }
+    async createCart() {
+      try {
+        return await this.cartFactory.createCart();
+      } catch (error) {
+        throw new Error('Error al crear un carrito');
+      }
+    }
 
   async getAllCarts() {
     try {
@@ -30,4 +38,4 @@ class CartRepository {
   }
 }
 
-module.exports = new CartRepository();
+module.exports =  CartRepository;

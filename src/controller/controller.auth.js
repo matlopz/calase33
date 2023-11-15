@@ -16,7 +16,8 @@ router.post('/register', passport.authenticate('register', { failureRedirect: '/
       res.status(201).json({ status: 'success', payload: req.user });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ status: 'error', error: 'Internal Server Error' });
+      res.status(500).json({ status: 'error', error: 'Internal Server Error' })
+
     }
   });
 
@@ -27,6 +28,7 @@ router.get('/failregister', (req, res) => {
 
 router.get('/login', (req, res) => {
   res.render('login')
+  
 })
 router.post('/login', async (req, res) => {
   try {
@@ -34,8 +36,9 @@ router.post('/login', async (req, res) => {
     console.log(req.body)
 
     const {  token }= await usuarioService.validateUser({email,password})
-
+    
     res
+    
       .cookie('authCookie')
       .json({ status: 'success', payload: 'New session initialized', token });
   } catch (error) {

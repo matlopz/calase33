@@ -1,16 +1,23 @@
 
-const cartService = require('../services/cartsService');
+
 const UsuarioRepository = require('../repositories/UsuarioRepository');
+//const cartsService = require('.cartsService');
 const { comparePassword, getHashedPassword } = require('../utils/bcrypts');
 const { generateToken } = require('../utils/jwt');
-const messageRepository = require('../repositories/index'); // Asegúrate de ajustar la importación según tu estructura real de archivos.
+const {messageRepository,cartRepository} = require('../repositories/index'); // Asegúrate de ajustar la importación según tu estructura real de archivos.
 
+//const cartService = new CartsService()
+//this.cartService = new CartService()
 class UsuarioService {
+  
   constructor() {
     this.usuarioRepository = new UsuarioRepository();
+   
     
+
   }
-  async obtenerUsuario(id){
+
+  async obtenerUsuario(id) {
     try {
       const user = await this.usuarioRepository.getUserById(id)
       if (!user) {
@@ -25,12 +32,12 @@ class UsuarioService {
 
   async validarEmail({ email }) {
     try {
-      
+
       const user = await this.usuarioRepository.getUserEmail(email);
 
       if (user) {
         console.log('El usuario ya existe');
-        return null; // Ajusta esto según tus necesidades.
+        return null;
       }
     } catch (error) {
       throw new Error('Error al buscar el usuario por correo electrónico');
@@ -39,6 +46,7 @@ class UsuarioService {
 
   async createUser(userDto) {
     try {
+    
       const { name, lastname, email, age, password, number } = userDto;
       if (!name || !email || !password) {
         throw new Error('Faltan datos obligatorios');
@@ -54,11 +62,13 @@ class UsuarioService {
         password: hashedPassword,
         cart: [],
       });
-
-      const cart = await cartService.createCart({ products: [] });
-      console.log('que tiene cart cuando se crea?',cart)
-      newUser.cart.push({ product: cart._id, quantity: 0 });
       
+      //const cart = await ({product: []});
+      
+      const cart = await cartRepository.createCart({ product: [] })
+      console.log('que tiene cart cuando se crea?', cart)
+      newUser.cart.push({ product: cart._id, quantity: 0 });
+
       const messageInfo = {
         name: newUser.name,
         number: newUser.number,

@@ -1,38 +1,42 @@
-const CartRepository = require('../repositories/cartRepository');
+const {cartRepository}= require('../repositories/index');
 const productsService = require('./productsService');
 const HTTP_STATUS_CODE = require('../constants/error.constants');
 const TicketService = require('./ticketService');
 
-const cartsService = {
+class CartsService  {
+  constructor() {
+   
+  }
+
   async getAllCarts() {
     try {
-      return await CartRepository.getAllCarts();
+      return await cartRepository.getAllCarts();
     } catch (error) {
       console.error('Error:', error);
       throw new Error('Error al obtener carritos');
     }
-  },
+  }
 
   async createCart() {
     try {
-      return await CartRepository.saveCart(await CartRepository.createEmptyCart());
+      return await cartRepository.saveCart(await cartRepository.createCart());
     } catch (error) {
       console.error('Error:', error);
       throw new Error('Error al crear el carrito');
     }
-  },
+  }
 
   async getCartProducts(cartId) {
     try {
       if (!cartId || cartId === 'null') {
         throw new Error('El cartId es nulo o no válido');
       }
-      return await CartRepository.getCartById(cartId.toString());
+      return await cartRepository.getCartById(cartId.toString());
     } catch (error) {
       console.error('Error:', error);
       throw new Error('Error al obtener carrito');
     }
-  },
+  }
 
   async addProductToCart(cartId, productId) {
     try {
@@ -42,7 +46,7 @@ const cartsService = {
         return { error: 'El producto no existe', statusCode: HTTP_STATUS_CODE.NOT_FOUND };
       }
   
-      const cart = await CartRepository.getCartById(cartId);
+      const cart = await cartRepository.getCartById(cartId);
   
       if (!cart) {
         return { error: 'El carrito no existe' };
@@ -73,7 +77,7 @@ const cartsService = {
       }
   
       try {
-        await CartRepository.saveCart(cart);
+        await cartRepository.saveCart(cart);
       } catch (error) {
         console.error('Error al guardar el carrito:', error);
         throw new Error('Error al guardar el carrito');
@@ -88,7 +92,7 @@ const cartsService = {
     }
   }
   
-  ,
+  
   
 
   async incrementProductQuantity(cartId, productId) {
@@ -100,7 +104,7 @@ const cartsService = {
         return { error: 'El producto no existe', statusCode: HTTP_STATUS_CODE.NOT_FOUND };
       }
 
-      const cart = await CartRepository.getCartById(cartId);
+      const cart = await cartRepository.getCartById(cartId);
 
       if (!cart) {
         return { error: 'El carrito no existe' };
@@ -116,7 +120,7 @@ const cartsService = {
         return { error: 'El producto no está en el carrito' };
       }
 
-      await CartRepository.saveCart(cart);
+      await cartRepository.saveCart(cart);
 
       return {
         updatedProduct: existingProduct,
@@ -124,7 +128,7 @@ const cartsService = {
     } catch (error) {
       throw new Error('Error al incrementar la cantidad del producto en el carrito: ' + error.message);
     }
-  },
+  }
 
   async decrementProductQuantity(cartId, productId) {
     try {
@@ -135,7 +139,7 @@ const cartsService = {
         return { error: 'El producto no existe', statusCode: HTTP_STATUS_CODE.NOT_FOUND };
       }
 
-      const cart = await CartRepository.getCartById(cartId);
+      const cart = await cartRepository.getCartById(cartId);
 
       if (!cart) {
         return { error: 'El carrito no existe' };
@@ -155,7 +159,7 @@ const cartsService = {
         return { error: 'El producto no está en el carrito' };
       }
 
-      await CartRepository.saveCart(cart);
+      await cartRepository.saveCart(cart);
 
       return {
         updatedProduct: existingProduct,
@@ -163,11 +167,12 @@ const cartsService = {
     } catch (error) {
       throw new Error('Error al decrementar la cantidad del producto en el carrito: ' + error.message);
     }
-  },
+  }
+
   async deleteProductFromCart(cartId, productId) {
     try {
        
-        const cart = await CartRepository.getCartById(cartId);
+        const cart = await cartRepository.getCartById(cartId);
         if (!cart) {
             return { error: 'El carrito no existe' };
         }
@@ -180,7 +185,7 @@ const cartsService = {
 
         try {
             
-            await CartRepository.saveCart(cart);
+            await cartRepository.saveCart(cart);
         } catch (error) {
             console.error('Error al guardar el carrito:', error);
             throw new Error('Error al guardar el carrito');
@@ -190,7 +195,7 @@ const cartsService = {
     } catch (error) {
         throw new Error('Error al eliminar producto del carrito: ' + error.message);
     }
-},
+}
 
 async purchaseCart(cart, user) {
   if (!cart || !user) {
@@ -227,11 +232,10 @@ async purchaseCart(cart, user) {
     console.log('que tiene tiket del lado de cart.', ticket);
   }
 
-  await CartRepository.saveCart(cart);
+  await cartRepository.saveCart(cart);
 
   return { productsNotPurchased, ticket };
 }
 
 }
-
-module.exports = cartsService;
+module.exports = new CartsService();

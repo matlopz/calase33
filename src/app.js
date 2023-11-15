@@ -5,9 +5,11 @@ const MongoConnection = require('./db');
 const cookieParser = require('cookie-parser');
 const passport = require('passport')
 const initializedPassport = require('./config/passport.config');
+const logger = require('./middlewares/logger.middleware');
 const router = require('./router')();
 
 const app = express();
+
 app.use(cookieParser())
 const hbs = handlebars.create({
  
@@ -17,6 +19,7 @@ const hbs = handlebars.create({
 app.use(cors());
 // Middleware para procesar JSON 
 app.use(express.json());
+app.use(logger)
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 app.engine('handlebars', hbs.engine);
