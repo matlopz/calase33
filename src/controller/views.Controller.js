@@ -22,6 +22,7 @@ router.get('/product', authToken, async (req, res) => {
 
     if (id) {
       const result = await productsService.getAllProducts(id);
+      console.log('qqqqq',result)
       cartId = result.cartId;
       products = result.products;
       usuario = result.usuario; 

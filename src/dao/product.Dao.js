@@ -1,5 +1,4 @@
-const Product = require('../models/products.models'); // Ajusta la importación según tu estructura de archivos.
-
+const Product = require('../models/products.models'); 
 class ProductDAO {
   async getAllProducts() {
     try {

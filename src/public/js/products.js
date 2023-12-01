@@ -1,5 +1,15 @@
 const socket = io();
+const getAuthToken = () => {
+  const authToken = localStorage.getItem('authToken');
+  console.log('que tiene authToken', authToken);
 
+  if (!authToken) {
+      console.log('No se encontró un token de autorización en el almacenamiento local.');
+      return null;
+  }
+
+  return authToken;
+};
 // Mostrar los productos en la lista
 function showProducts(products) {
   const productList = document.getElementById('productList');

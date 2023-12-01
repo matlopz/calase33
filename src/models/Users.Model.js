@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const userCollection = 'usuario'
+const userCollection = 'usuario';
 
 const userSchema = new mongoose.Schema({
   name: String,
@@ -8,13 +8,14 @@ const userSchema = new mongoose.Schema({
   number: Number,
   email: {
     type: String,
-    unique: true, 
-    required: true, 
+    unique: true,
+    required: true,
   },
-  age:Number,
-  
+  age: Number,
   password: String,
-  cart: [ 
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
+  cart: [
     {
       product: {
         type: mongoose.Schema.Types.ObjectId,
@@ -23,21 +24,16 @@ const userSchema = new mongoose.Schema({
       quantity: Number,
     },
   ],
-  /*cart: [
-    {
-      product: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product',
-      },
-      quantity: Number,
-    },
-  ],*/
   role: {
     type: String,
-    default: 'user', 
+    default: 'user',
   },
-})
+  premium: {
+    type: Boolean,
+    default: false,
+  },
+});
 
-const Usuarios = mongoose.model(userCollection, userSchema)
+const Usuarios = mongoose.model(userCollection, userSchema);
 
-module.exports = Usuarios
+module.exports = Usuarios;

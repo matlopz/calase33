@@ -5,6 +5,7 @@ const HTTP_STATUS_CODE = require('../constants/error.constants');
 const productsService = require('../services/productsService')
 const mongoose = require('mongoose');
 const ProductDTO = require('../dto/product.dto');
+const { authToken } = require('../utils/jwt');
 const io = Chat()
 
 
@@ -54,12 +55,13 @@ router.post('/realTimeProducts', async (req, res) => {
   }
 });
 
-router.put('/realTimeProducts/:pid', async (req, res) => {
+router.put('/realTimeProducts/:pid', authToken,async (req, res) => {
   try {
     const pid = req.params.pid;
     const updatedProduct = req.body;
+    const userId = req.user;
     // const updatedProductResult = await productsService.updateProduct(pid, updatedProduct);
-    const updatedProductResult = await productsService.updateProduct(pid, updatedProduct);
+    const updatedProductResult = await productsService.updateProduct(userId,pid, updatedProduct);
     console.log('Resultado de la actualización:', updatedProductResult); 
     if (updatedProductResult) {
       io.emit('productUpdated', updatedProductResult);

@@ -46,6 +46,9 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ status: 'error', error: 'Internal Server Error' });
   }
 });
+
+
+
 /*router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body
