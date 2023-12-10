@@ -39,24 +39,37 @@ class ProductService {
       throw error;
     }
   }
-  async getAllProduct() {
-    return this.productRepository.getAllProducts();
+  async getAllProduct(Id) {
+    try {
+      const user = await usuarioService.obtenerUsuario(Id);
+      console.log(user, 'ACA')
+
+      if (!user) {
+        console.error('Usuario no encontrado');
+        throw new Error('Usuario no encontrado');
+      }
+
+      return this.productRepository.getAllProducts();
+    } catch (error) {
+      console.error('GET Products - Error:', error);
+      throw error;
+    }
+    
   }
   async getProductById(pid) {
     return this.productRepository.getProductById(pid);
   }
 
-  async addProduct(userId, product) {
+  async addProduct(  product) {
     try {
-      const user = await usuarioService.obtenerUsuario(userId);
+      
+      console.log('que tiene user en add',user)
 
 
-      if (user.role !== 'premium') {
-        throw new Error('Solo los usuarios premium pueden crear productos.');
-      }
+      
 
-
-      productData.owner = user.email;
+     
+      
 
       return this.productRepository.addProduct(product);
     } catch (error) {
@@ -66,9 +79,9 @@ class ProductService {
   }
 
 
-  async updateProduct(userId, productId, updatedProductData) {
+  async updateProduct( productId, updatedProductData) {
     try {
-      const product = await Product.findById(productId);
+      const product = await this.productRepository.getProductById(productId);
 
       if (!product) {
         console.error('Producto no encontrado');
@@ -76,10 +89,7 @@ class ProductService {
       }
 
       
-      if (product.owner.toString() !== userId && !user.premium) {
-        console.error('Permiso denegado para actualizar el producto');
-        throw new Error('Permiso denegado');
-      }
+     
 
       const updatedProduct = await this.productRepository.updateProduct(productId, updatedProductData, { new: true });
 
@@ -97,31 +107,27 @@ class ProductService {
 
   async deleteProduct(userId, productId) {
     try {
-      const product = await Product.findById(productId);
-
-      if (!product) {
-        console.error('Producto no encontrado');
-        throw new Error('Producto no encontrado');
-      }
-
-      // Verificar si el usuario tiene permisos
-      if (product.owner.toString() !== userId && !user.premium) {
+      console.log('datos de ingreso,', userId, productId);
+      const user = await usuarioService.obtenerUsuario(userId);
+      const producto = await this.productRepository.getProductById(productId)
+      
+      if (user.role !== 'premium' && user.email !== producto.owner || producto.owner=== undefined){
         console.error('Permiso denegado para borrar el producto');
         throw new Error('Permiso denegado');
+      } else {
+        await this.productRepository.deleteProduct(productId);
+        return ('producto eliminado')
       }
-
-      const deletedProduct = await Product.findByIdAndDelete(productId);
-
-      if (!deletedProduct) {
-        console.error('Producto no encontrado');
-        throw new Error('Producto no encontrado');
-      }
+     
+      
+      
+     
     } catch (error) {
       console.error('Error al borrar el producto:', error);
       throw error;
     }
   }
-
+  
   async getProductsByQuery(queryParams) {
     return this.productRepository.getProductsByQuery(queryParams);
   }

@@ -30,7 +30,7 @@
   <a href="/api/users">Ir al chat</a>
 
   <br>
-  <div id="editAndDeleteForms">
+  
 <form id="editProductByIdForm">
   <h2>Editar Producto por ID</h2>
   <label for="productId">ID del Producto:</label>
@@ -39,10 +39,10 @@
   <input type="text" id="newTitle" required><br>
   <label for="newPrice">Nuevo Precio:</label>
   <input type="number" id="newPrice" required><br>
-  <!-- Agrega otros campos de edición aquí -->
+  <br>
   <button id="editProductByIdBtn">Editar Producto</button>
 </form>
-
+<br>
 <form id="deleteProductByIdForm">
       <h2>Borrar Producto por ID</h2>
       <label for="deleteProductId">ID del Producto:</label>
@@ -56,6 +56,7 @@
  <ul id="productList">
     {{#each products}}
       <li>
+        <strong>ID:</strong> <li>{{this._id}}</li><br>
         <strong>Titulo:</strong> <li>{{this.title}}</li><br>
         <strong>Descripción:</strong> {{description}}<br>
         <strong>Código:</strong> {{code}}<br>
@@ -64,6 +65,7 @@
         <strong>Stock:</strong> {{stock}}<br>
         <strong>Categoría:</strong> {{category}}<br>
         <strong>Thumbnails:</strong> {{thumbnails}}<br>
+        <strong>Owner:</strong> {{owner}}<br>
         <br>
        
       </li>
@@ -72,7 +74,7 @@
   </ul>
 
  
-  <script src="/socket.io/socket.io.js"></script>
+
  
   <script src="/js/products.js"></script>
 </body>

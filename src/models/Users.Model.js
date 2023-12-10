@@ -24,14 +24,9 @@ const userSchema = new mongoose.Schema({
       quantity: Number,
     },
   ],
-  role: {
-    type: String,
-    default: 'user',
-  },
-  premium: {
-    type: Boolean,
-    default: false,
-  },
+  role: { type: String, enum: ['user', 'admin', 'premium'], default: 'user' },
+
+
 });
 
 const Usuarios = mongoose.model(userCollection, userSchema);

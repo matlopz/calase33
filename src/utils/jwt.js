@@ -1,32 +1,60 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const secretKey = 'secreto';
 
-const secretKey = 'secreto'
-
-const generateToken = user => {
-  console.log('que tiene user jwt:', {user})
-  return jwt.sign({ user }, secretKey)
-  
-}
+const generateToken = (user) => {
+  return jwt.sign({ user }, secretKey);
+};
 
 const authToken = (req, res, next) => {
-  const authHeader = req.headers.authorization
-  console.log('que tiene header: ',authHeader)
+  // Determina si es una conexión de socket o una solicitud HTTP
+  const isSocketConnection = req.hasOwnProperty('client');
 
-  if (!authHeader)
-    return res.status(401).json({ status: 'error', error: 'Nooooo' })
+  try {
+    if (isSocketConnection) {
+      // Lógica de autenticación para conexiones de socket
+      const authToken = req.headers.authorization;
+      
+      if (!authToken) {
+        throw new Error('Authentication error');
+      }
 
-  const token = authHeader.split(' ')[1]
+      jwt.verify(authToken.split(' ')[1], secretKey, (error, credentials) => {
+        if (error) {
+          throw new Error('Forbidden');
+        }
 
-  jwt.verify(token, secretKey, (error, credentials) => {
-    if (error)
-      return res.status(403).json({ status: 'error', error: 'Forbidden' })
+        req.user = credentials.user;
+        next();
+      });
+    } else {
+      // Lógica de autenticación para solicitudes HTTP
+      const authHeader = req.headers.authorization;
 
-    req.user = credentials.user
-    next()
-  })
-}
+      if (!authHeader) {
+        return res.status(401).json({ status: 'error', error: 'Nooooo' });
+      }
+
+      const token = authHeader.split(' ')[1];
+
+      jwt.verify(token, secretKey, (error, credentials) => {
+        if (error) {
+          return res.status(403).json({ status: 'error', error: 'Forbidden' });
+        }
+
+        req.user = credentials.user;
+        next();
+      });
+    }
+  } catch (error) {
+    if (isSocketConnection) {
+      next(new Error('Authentication error'));
+    } else {
+      res.status(403).json({ status: 'error', error: 'Forbidden' });
+    }
+  }
+};
 
 module.exports = {
   generateToken,
   authToken,
-}
+};

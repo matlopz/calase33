@@ -17,9 +17,10 @@ class UsuarioService {
 
   }
 
-  async obtenerUsuario(id) {
+  async obtenerUsuario(Id) {
     try {
-      const user = await this.usuarioRepository.getUserById(id)
+      const user = await this.usuarioRepository.getUserById(Id)
+      console.log('USER: ',user);
       if (!user) {
         console.error('Usuario no encontrado');
         throw new Error('Usuario no encontrado');

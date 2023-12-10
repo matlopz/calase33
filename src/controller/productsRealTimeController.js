@@ -6,21 +6,28 @@ const productsService = require('../services/productsService')
 const mongoose = require('mongoose');
 const ProductDTO = require('../dto/product.dto');
 const { authToken } = require('../utils/jwt');
+const UsuarioService = require('../services/usuarioService');
 const io = Chat()
+const usuarioService = new UsuarioService()
 
 
 const router = express.Router();
 
-
-router.get('/', async (req, res) => {
+router.get('/', (req, res) => {
+  res.render('realTimeProducts')
+  
+})
+router.get('/prod', authToken, async (req, res) => {
   try {
-    console.log('GET /realTimeProducts - Inicio');
+    const Id = req.user;
+    console.log(Id);
+
+    // Aquí asumimos que productsService.getAllProducts() devuelve todos los productos
+    const products = await productsService.getAllProduct(Id);
+
+    console.log('GET /realTimeProducts - Renderización exitosa',products);
+    res.json({ products });
     
-    const products = await productsService.getAllProduct()
-    console.log('GET /realTimeProducts - Productos encontrados:', products);
-    
-    res.render('realTimeProducts', { products });
-    console.log('GET /realTimeProducts - Renderización exitosa');
   } catch (err) {
     console.error('GET /realTimeProducts - Error:', err);
     res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
@@ -28,26 +35,51 @@ router.get('/', async (req, res) => {
 });
 
 
-router.post('/realTimeProducts', async (req, res) => {
+/*  s
+router.get('/', async (req, res) => {
   try {
-    console.log('POST /realTimeProducts - Inicio');
-    
-    const newProduct = new ProductDTO(req.body)
+    const id = req.user;
+    console.log('GET /realTimeProducts - Inicio', id);
+    const products = await productsService.getAllProduct();
+    console.log('GET /realTimeProducts - Productos encontrados:', products);
+
+    res.status(HTTP_STATUS_CODE.OK).json({ products });
+    console.log('GET /realTimeProducts - Respuesta JSON enviada');
+  } catch (err) {
+    console.error('GET /realTimeProducts - Error:', err);
+    res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
+  }
+});
+*/
+
+
+router.post('/',authToken, async (req, res) => {
+  try {
+    const Id = req.user
+    const user = await usuarioService.obtenerUsuario(Id);
+    console.log('POST /realTimeProducts - Inicio',user);
+    if (user.role !== 'premium') {
+      throw new Error('Solo los usuarios premium pueden crear productos.');
+    }
+    console.log('Request Body:', req.body);
+    //const newProduct = new ProductDTO(req.body)
     const addedProduct = new Products({
       _id: new mongoose.Types.ObjectId(),
-      ...newProduct,
+      owner: user.email,
+      ...req.body.product,
+      
     });
-
     await addedProduct.save();
+    //await addedProduct.save();
     console.log('POST /realTimeProducts - Nuevo producto guardado:', addedProduct);
     
-    io.emit('addProduct', addedProduct);
+
     console.log('POST /realTimeProducts - Emitido evento "addProduct"');
     
-    const products = await productsService.getAllProducts({});
-    console.log('POST /realTimeProducts - Productos encontrados:', products);
+    const products = await productsService.getAllProducts(Id);
+    console.log('POST /realTimeProducts - Productos encontrados:', addedProduct);
     
-    res.status(HTTP_STATUS_CODE.OK).json(addedProduct);
+    res.status(HTTP_STATUS_CODE.OK).json(products);
     console.log('POST /realTimeProducts - Respuesta JSON enviada');
   } catch (err) {
     console.error('POST /realTimeProducts - Error:', err);
@@ -55,35 +87,54 @@ router.post('/realTimeProducts', async (req, res) => {
   }
 });
 
-router.put('/realTimeProducts/:pid', authToken,async (req, res) => {
+// Código del lado del servidor (Node.js/Express)
+router.put('/:productId',authToken, async (req, res) => {
   try {
-    const pid = req.params.pid;
-    const updatedProduct = req.body;
+    console.log('Solicitud PUT recibida');
+    const pid = req.params.productId;
+    const updatedProduct = req.body.updatedProduct;
     const userId = req.user;
-    // const updatedProductResult = await productsService.updateProduct(pid, updatedProduct);
-    const updatedProductResult = await productsService.updateProduct(userId,pid, updatedProduct);
-    console.log('Resultado de la actualización:', updatedProductResult); 
+    console.log('Datos que tiene:', pid, updatedProduct, userId);
+
+    const user = await usuarioService.obtenerUsuario(userId);
+    if (user.role !== 'premium') {
+      return res.status(HTTP_STATUS_CODE.UNAUTHORIZED).json({ error: 'Unauthorized' });
+    }
+
+    const updatedProductResult = await productsService.updateProduct(pid, updatedProduct);
+    console.log('Resultado de la actualización:', updatedProductResult);
+
     if (updatedProductResult) {
-      io.emit('productUpdated', updatedProductResult);
       res.status(HTTP_STATUS_CODE.OK).json(updatedProductResult);
     } else {
-      res.status(HTTP_STATUS_CODE.NOT_FOUND).json({ error: 'Product not found' });
+      res.status(HTTP_STATUS_CODE.OK).json({ error: 'Product not found' });
     }
   } catch (err) {
+    console.error('Error al actualizar el producto:', err);
     res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
   }
 });
 
-router.delete('/realTimeProducts/:pid', async (req, res) => {
+
+
+router.delete('/:productId', authToken, async (req, res) => {
   try {
-    const pid = req.params.pid;
-    // await productsService.deleteProduct(pid);
-    await productsService.deleteProduct(pid);
-    io.emit('deleteProduct', pid);
+    const productId = req.params.productId;
+    const userId = req.user;
+    console.log('que tiene esto:', {productId, userId});
+    await productsService.deleteProduct(userId, productId);
+    
     res.status(HTTP_STATUS_CODE.OK).json({ message: 'Product deleted successfully' });
   } catch (err) {
-    res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
+    if (err.message === 'Product not found') {
+      res.status(HTTP_STATUS_CODE.NOT_FOUND).json({ error: 'Product not found' });
+    } else {
+      res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
+    }
   }
 });
+
+
+
 
 module.exports = router;
