@@ -35,12 +35,12 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body
     console.log(req.body)
 
-    const {  token }= await usuarioService.validateUser({email,password})
-    
+    const { user ,token }= await usuarioService.validateUser({email,password})
+    console.log('que tiene token:::',token,user)
     res
     
       .cookie('authCookie')
-      .json({ status: 'success', payload: 'New session initialized', token });
+      .json({ status: 'success', payload: 'New session initialized', token,user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ status: 'error', error: 'Internal Server Error' });

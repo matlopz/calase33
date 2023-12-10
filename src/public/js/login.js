@@ -29,12 +29,17 @@ loginForm.addEventListener('submit', async e => {
 
     console.log('datos del back token: ',newSession)
     const token = newSession.token
+    const user = newSession.user.role
     localStorage.setItem('authToken',token)
-    console.log('que tiene local Storage: ',token)
+    console.log('que tiene local Storage: ',token, user)
     if (newSession.status === 'success') {
       console.log('Inicio de sesión exitoso');
-     
-     window.location.href = '/views/productos';
+     if(user !=='premium'){
+      window.location.href = '/views/productos';
+     }else{
+      window.location.href = '/realTimeProducts';
+     }
+    
     } else {
       console.log('Error en el inicio de sesión');
     }
