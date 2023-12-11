@@ -105,7 +105,7 @@ class UsuarioService {
   async validateUser({ email, password }) {
     try {
       const user = await this.usuarioRepository.getUserEmail(email);
-      console.log('Tiene usuario', user);
+      
 
       if (!user) {
         throw new Error('Credenciales inválidas');
@@ -118,10 +118,10 @@ class UsuarioService {
       }
 
       const token = generateToken(user._id);
-      console.log('¿Qué tiene el token:', token);
+  
       return { user, token };
     } catch (error) {
-      throw new Error('Error al buscar el usuario por correo electrónico o credenciales inválidas');
+      throw new Error('Credenciales inválidas');
     }
   }
   async enviarCorreoRestablecimientoContraseña({email,token}) {

@@ -35,22 +35,7 @@ router.get('/prod', authToken, async (req, res) => {
 });
 
 
-/*  s
-router.get('/', async (req, res) => {
-  try {
-    const id = req.user;
-    console.log('GET /realTimeProducts - Inicio', id);
-    const products = await productsService.getAllProduct();
-    console.log('GET /realTimeProducts - Productos encontrados:', products);
 
-    res.status(HTTP_STATUS_CODE.OK).json({ products });
-    console.log('GET /realTimeProducts - Respuesta JSON enviada');
-  } catch (err) {
-    console.error('GET /realTimeProducts - Error:', err);
-    res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
-  }
-});
-*/
 
 
 router.post('/',authToken, async (req, res) => {

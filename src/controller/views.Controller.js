@@ -4,6 +4,7 @@ const productsService = require('../services/productsService')
 const cartsService = require('../services/cartsService')
 const passportCall = require('../utils/passport.call');
 const { authToken } = require('../utils/jwt');
+const { winstonlogger } = require('../utils/winston');
 
 const router = express.Router();
 
@@ -16,26 +17,26 @@ router.get('/productos', async (req, res) => {
 router.get('/product', authToken, async (req, res) => {
   try {
     const id = req.user;
-    console.log('Tiene esta variable ID ROUTER: ', id);
+    winstonlogger.debug('Tiene esta variable ID ROUTER:', id);
 
-    let usuario, cartId, products; 
+    let usuario, cartId, products;
 
     if (id) {
-      
       const result = await productsService.getAllProducts(id);
-      console.log('qqqqq',result)
+      winstonlogger.debug('Resultado de getAllProducts:', result);
       cartId = result.cartId;
       products = result.products;
-      usuario = result.usuario; 
-      console.log('que tiene RESULT: ', usuario, cartId, products);
+      usuario = result.usuario;
+      winstonlogger.info('Resultados obtenidos:', usuario, cartId, products);
     } else {
+      winstonlogger.warning('Intento de acceso no autorizado.');
       res.status(401).json({ status: 'Error', error: 'No autorizado' });
-      return; 
+      return;
     }
 
-    res.json({ cartId, usuario, products }); 
+    res.json({ cartId, usuario, products });
   } catch (err) {
-    console.error('GET Products - Error:', err);
+    winstonlogger.error('GET Products - Error:', err);
     res.status(401).json({ error: 'No autorizado' });
   }
 });

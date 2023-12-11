@@ -32,20 +32,24 @@ router.get('/login', (req, res) => {
 })
 router.post('/login', async (req, res) => {
   try {
-    const { email, password } = req.body
-    console.log(req.body)
+    const { email, password } = req.body;
+    console.log(req.body);
 
-    const { user ,token }= await usuarioService.validateUser({email,password})
-    console.log('que tiene token:::',token,user)
-    res
-    
-      .cookie('authCookie')
-      .json({ status: 'success', payload: 'New session initialized', token,user });
+    const { user, token } = await usuarioService.validateUser({ email, password });
+    console.log('¿Qué tiene el token:', token);
+
+    if (!user) {
+      
+      res.status(401).json({ status: 'error', error: 'Invalid credentials' });
+    } else {
+      res.json({ status: 'success', payload: 'New session initialized', token, user });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ status: 'error', error: 'Internal Server Error' });
   }
 });
+
 
 
 

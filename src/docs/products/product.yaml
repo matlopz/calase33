@@ -1,0 +1,122 @@
+openapi: "3.0.1"
+info:
+  title: API de Usuarios
+  version: "1.0"
+
+components:
+  securitySchemes:
+    JWTAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+
+paths:
+  /realTimeProducts/prod:
+    get:
+      summary: Obtener todos los productos del usuario.
+      tags:
+        - product
+      security:
+        - JWTAuth: []
+      responses:
+        "200":
+          description: Productos obtenidos exitosamente.
+
+  /realTimeProducts:
+    post:
+      summary: Crear un nuevo producto.
+      tags:
+        - product
+      security:
+        - JWTAuth: []
+      requestBody:
+        description: Datos del nuevo producto.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductDTO"
+      responses:
+        "200":
+          description: Producto creado exitosamente.
+
+  /realTimeProducts/{productId}:
+    put:
+      summary: Actualizar un producto existente.
+      tags:
+        - product
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: ID del producto a actualizar.
+          schema:
+            type: string
+      requestBody:
+        description: Datos actualizados del producto.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductDTO"
+      responses:
+        "200":
+          description: Producto actualizado exitosamente.
+
+    delete:
+      summary: Eliminar un producto existente.
+      tags:
+        - product
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: ID del producto a eliminar.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto eliminado exitosamente.
+
+components:
+  securitySchemes:
+    JWTAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: "Incluye el token JWT en la cabecera de la solicitud. Ejemplo: 'Bearer <token>'"
+  schemas:
+    ProductDTO:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Título del producto.
+        price:
+          type: number
+          description: Precio del producto.
+        description:
+          type: string
+          description: Descripción del producto.
+        code:
+          type: string
+          description: Código del producto.
+        status:
+          type: boolean
+          description: Estado del producto.
+        stock:
+          type: string
+          description: Stock del producto.
+        category:
+          type: string
+          description: Categoría del producto.
+        thumbnails:
+          type: string
+          description: Enlaces a miniaturas del producto.
+        owner:
+          type: string
+          description: Propietario del producto.

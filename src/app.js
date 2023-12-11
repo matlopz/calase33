@@ -7,6 +7,9 @@ const passport = require('passport')
 const initializedPassport = require('./config/passport.config');
 const logger = require('./middlewares/logger.middleware');
 const router = require('./router')();
+const swaggerJSDoc = require('swagger-jsdoc')
+const swaggerUi = require('swagger-ui-express')
+
 
 const app = express();
 
@@ -15,6 +18,20 @@ const hbs = handlebars.create({
  
     allowProtoPropertiesByDefault: true
 });
+const swaggerOptions = {
+    definition: {
+      openapi: '3.0.1',
+      info: {
+        title: 'Documentación de nuestra app mostrar los Productos',
+        description:
+          'Documentación que muestra todos los Productos del cliente',
+      },
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`],
+  }
+
+  const spec = swaggerJSDoc(swaggerOptions)
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec))
 
 app.use(cors());
 // Middleware para procesar JSON 

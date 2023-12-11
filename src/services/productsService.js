@@ -39,6 +39,15 @@ class ProductService {
       throw error;
     }
   }
+  async obtenerProduct(){
+    try {
+
+      return this.productRepository.getAllProducts();
+    } catch (error) {
+      console.error('GET Products - Error:', error);
+      throw error;
+    }
+  }
   async getAllProduct(Id) {
     try {
       const user = await usuarioService.obtenerUsuario(Id);

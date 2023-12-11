@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const productsService= require('../services/productsService');
-const { authToken } = require('../utils/jwt');
+
 
 
 router.get('/' ,async (req, res) => {
     try {
       console.log('GET Products - Inicio');
       
-      const products = await productsService.getAllProduct({})
+      const products = await productsService.obtenerProduct({})
       console.log('GET Products - Productos encontrados:', products);
 
       return res.json({products})
