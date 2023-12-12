@@ -6,26 +6,34 @@
 </head>
 <body>
   <h1>Crear Productos en Tiempo Real</h1>
-  <form id="addProductForm">
-    
-    <label for="productTitle">Title:</label>
-    <input type="text" id="productTitle" required><br>
-    <label for="productPrice">Price:</label>
-    <input type="number" id="productPrice" required><br>
-    <label for="productDescription">Description:</label>
-    <input type="text" id="productDescription" required><br>
-    <label for="productCode">Code:</label>
-    <input type="text" id="productCode" required><br>   
-    <label for="productStatus">Status:</label>
-    <input type="text" id="productStatus" required><br>
-    <label for="productStock">Stock:</label>
-    <input type="number" id="productStock" required><br>
-    <label for="productCategory">Category:</label>
-    <input type="text" id="productCategory" required><br>
-    <label for="productThumbnails">Thumbnails:</label>
-    <input type="text" id="productThumbnails" required><br>
-    <button type="submit">Agregar Producto</button><br>
-  </form>
+<form id="addProductForm" enctype="multipart/form-data">
+  <label for="productTitle">Title:</label>
+  <input type="text" id="productTitle" required><br>
+  
+  <label for="productPrice">Price:</label>
+  <input type="number" id="productPrice" required><br>
+  
+  <label for="productDescription">Description:</label>
+  <input type="text" id="productDescription" required><br>
+  
+  <label for="productCode">Code:</label>
+  <input type="text" id="productCode" required><br>
+  
+  <label for="productStatus">Status:</label>
+  <input type="text" id="productStatus" required><br>
+  
+  <label for="productStock">Stock:</label>
+  <input type="number" id="productStock" required><br>
+  
+  <label for="productCategory">Category:</label>
+  <input type="text" id="productCategory" required><br>
+  
+  <label for="productThumbnails">Thumbnails:</label>
+  <input type="file" id="productThumbnails" name="productThumbnails" required><br>
+
+  <button type="submit">Agregar Producto</button><br>
+</form>
+
   <br>
   <a href="/api/users">Ir al chat</a>
 

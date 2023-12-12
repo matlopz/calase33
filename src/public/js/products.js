@@ -11,7 +11,7 @@ const getAuthToken = () => {
   return authToken;
 };
 
-// Función para mostrar productos en la interfaz de usuario
+
 async function showProducts() {
   console.log('Entró a showProducts');
   const productList = document.getElementById('productList');
@@ -49,7 +49,7 @@ async function showProducts() {
 
     console.log('Productos obtenidos:', productsData.products);
 
-    // Actualizar la lista de productos en la interfaz de usuario
+   
     const products = productsData.products;
     products.forEach((product) => {
       productList.innerHTML += `
@@ -80,13 +80,13 @@ async function showProducts() {
   }
 }
 
-// Llamar a la función showProducts al cargar la página
+
 document.addEventListener('DOMContentLoaded', showProducts);
 
 
 
 
-// Función para realizar la actualización del producto
+
 const updateProductById = async () => {
   const productId = document.getElementById('productId').value;
   console.log('que tiene::', productId);
@@ -121,19 +121,19 @@ const updateProductById = async () => {
 
     const updatedProductResult = await response.json();
     console.log('Producto actualizado:', updatedProductResult);
-    // Actualizar la interfaz de usuario si es necesario
+
   } catch (error) {
     console.error('Error al actualizar el producto:', error);
   } finally {
-    // Habilitar el botón después de completar la solicitud (éxito o fallo)
+    
     document.getElementById('editProductByIdBtn').disabled = false;
   }
 };
 
-// Agregar el event listener al botón
+
 document.getElementById('editProductByIdBtn').addEventListener('click', updateProductById);
 
-// Agregar event listener para el botón de eliminación por ID
+
 function deleteProductById() {
   const productId = document.getElementById('deleteProductId').value;
   console.log('que tiene esto:', productId);
@@ -174,28 +174,32 @@ document.getElementById('addProductForm').addEventListener('submit', async (even
   const productStatus = document.getElementById('productStatus').value;
   const productStock = document.getElementById('productStock').value;
   const productCategory = document.getElementById('productCategory').value;
-  const productThumbnails = document.getElementById('productThumbnails').value;
+  
 
-  // Construir el objeto de producto
-  const newProduct = {
-    title: productName,
-    price: parseFloat(productPrice),
-    description: productDescription,
-    code: productCode,
-    status: productStatus,
-    stock: productStock,
-    category: productCategory,
-    thumbnails: productThumbnails,
-  };
+  // Obtener el archivo de entrada (input type="file")
+  const fileInput = document.getElementById('productThumbnails');
+  const files = fileInput.files;
+
+  // Construir el objeto de FormData
+  const formData = new FormData();
+  formData.append('title', productName);
+  formData.append('price', parseFloat(productPrice));
+  formData.append('description', productDescription);
+  formData.append('code', productCode);
+  formData.append('status', productStatus);
+  formData.append('stock', productStock);
+  formData.append('category', productCategory);
+  formData.append('productThumbnails', files[0]); 
+  // Agregar archivos al FormData
+
 
   try {
     const response = await fetch('/realTimeProducts', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
         Authorization: `Bearer ${getAuthToken()}`,
       },
-      body: JSON.stringify({ product: newProduct }),
+      body: formData,
     });
 
     if (!response.ok) {

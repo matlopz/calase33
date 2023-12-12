@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests",
+    "test": "mocha login.test.js",
     "start:dev": "set NODE_ENV=dev&& nodemon src/index.js",
     "start:prod": "set NODE_ENV=prod&& node src/index.js"
   },
@@ -23,9 +23,11 @@
     "express-session": "^1.17.3",
     "faker": "^6.6.6",
     "jsonwebtoken": "^9.0.2",
+    "mkdirp": "^3.0.1",
     "mongoose": "^7.4.4",
     "mongoose-paginate-v2": "^1.7.31",
     "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.7",
     "passport": "^0.6.0",
     "passport-github2": "^0.1.12",

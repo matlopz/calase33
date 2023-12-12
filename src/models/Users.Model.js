@@ -15,6 +15,22 @@ const userSchema = new mongoose.Schema({
   password: String,
   resetPasswordToken: String,
   resetPasswordExpires: Date,
+  documents: [
+    {
+      name: {
+        type: String,
+        required: true,
+      },
+      reference: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
+
+  last_connection: {
+    type: Date,
+  },
   cart: [
     {
       product: {
@@ -23,6 +39,7 @@ const userSchema = new mongoose.Schema({
       },
       quantity: Number,
     },
+    
   ],
   role: { type: String, enum: ['user', 'admin', 'premium'], default: 'user' },
 

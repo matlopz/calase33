@@ -7,8 +7,10 @@ const mongoose = require('mongoose');
 const ProductDTO = require('../dto/product.dto');
 const { authToken } = require('../utils/jwt');
 const UsuarioService = require('../services/usuarioService');
+const uploader = require('../utils/multer');
 const io = Chat()
 const usuarioService = new UsuarioService()
+
 
 
 const router = express.Router();
@@ -38,39 +40,51 @@ router.get('/prod', authToken, async (req, res) => {
 
 
 
-router.post('/',authToken, async (req, res) => {
+router.post('/', authToken, uploader.array('productThumbnails'), async (req, res, next) => {
   try {
-    const Id = req.user
-    const user = await usuarioService.obtenerUsuario(Id);
-    console.log('POST /realTimeProducts - Inicio',user);
+    const files = req.files; // files en lugar de file para manejar múltiples archivos
+    console.log(files, 'yooo::::');
+    
+    const userId = req.user;
+    const user = await usuarioService.obtenerUsuario(userId);
+
+    console.log('POST /realTimeProducts - Inicio', user);
+
     if (user.role !== 'premium') {
       throw new Error('Solo los usuarios premium pueden crear productos.');
     }
-    console.log('Request Body:', req.body);
-    //const newProduct = new ProductDTO(req.body)
+
+    // Si estás recibiendo múltiples archivos, crea un array de rutas de imágenes
+    const thumbnailPaths = files.map(file => file.path);
+
+    // Crear tu objeto de producto con la información del archivo si está presente
+    console.log(req.body,'producto mandado::::::');
     const addedProduct = new Products({
       _id: new mongoose.Types.ObjectId(),
       owner: user.email,
-      ...req.body.product,
-      
+      ...req.body,
+      thumbnails: thumbnailPaths, // Usar el array de rutas de imágenes
     });
+
     await addedProduct.save();
-    //await addedProduct.save();
     console.log('POST /realTimeProducts - Nuevo producto guardado:', addedProduct);
-    
 
     console.log('POST /realTimeProducts - Emitido evento "addProduct"');
-    
-    const products = await productsService.getAllProducts(Id);
-    console.log('POST /realTimeProducts - Productos encontrados:', addedProduct);
-    
+
+    const products = await productsService.getAllProducts(userId);
+    console.log('POST /realTimeProducts - Productos encontrados:', products);
+
     res.status(HTTP_STATUS_CODE.OK).json(products);
     console.log('POST /realTimeProducts - Respuesta JSON enviada');
+
+    next();
   } catch (err) {
     console.error('POST /realTimeProducts - Error:', err);
     res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
   }
 });
+
+
 
 // Código del lado del servidor (Node.js/Express)
 router.put('/:productId',authToken, async (req, res) => {

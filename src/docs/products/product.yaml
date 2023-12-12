@@ -3,21 +3,14 @@ info:
   title: API de Usuarios
   version: "1.0"
 
-components:
-  securitySchemes:
-    JWTAuth:
-      type: apiKey
-      in: header
-      name: Authorization
+
 
 paths:
-  /realTimeProducts/prod:
+  /productos:
     get:
       summary: Obtener todos los productos del usuario.
       tags:
         - product
-      security:
-        - JWTAuth: []
       responses:
         "200":
           description: Productos obtenidos exitosamente.

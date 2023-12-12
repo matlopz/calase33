@@ -12,7 +12,10 @@ const productSchema = new mongoose.Schema({
   status: Boolean,
   stock: String,
   category: String,
-  thumbnails: String,
+  thumbnails: {
+    type: [String], // Ahora es un array de strings
+    required: true,
+  },
   owner: String,
 });
 
