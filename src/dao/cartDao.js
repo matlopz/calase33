@@ -29,7 +29,7 @@ class CartDao {
 
   async saveCart(cart) {
     try {
-      // Implementa el guardado del carrito en la fuente de datos usando el modelo Cart
+
       await cart.save();
     } catch (error) {
       throw new Error('Error saving cart');

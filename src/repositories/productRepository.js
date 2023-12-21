@@ -1,4 +1,4 @@
-const ProductFactory = require('../factories/productFactory'); // Ajusta la importación según tu estructura de archivos.
+const ProductFactory = require('../factories/productFactory');
 
 class ProductRepository {
   constructor() {

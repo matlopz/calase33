@@ -10,7 +10,7 @@ const userService = (httpServer)=>{
     
   
     io.on('connection', async (socket) => {
-      console.log(`Usuario conectado: ${socket.id}`);
+     
       
       socket.on('message', async data => {
         const user = await users.findOne({username: data.user})

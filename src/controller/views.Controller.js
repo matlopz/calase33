@@ -13,7 +13,6 @@ router.get('/productos', async (req, res) => {
   return res.render('products')
 })
  
-// En tu enrutamiento
 router.get('/product', authToken, async (req, res) => {
   try {
     const id = req.user;
@@ -109,7 +108,7 @@ router.post('/carts/product/:productId/delete', async (req, res) => {
 
 router.post('/carts/:cid/purchase',authToken, async (req, res) => {
   const cartId = req.params.cid;
-  const user = req.user; // Asume que puedes acceder al usuario a través de req.user o la forma que utilices
+  const user = req.user; 
 console.log('que tiene estos datos',cartId, user)
   if (!cartId || !user) {
     return res.status(400).json({ success: false, message: 'Datos de entrada no válidos' });

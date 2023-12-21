@@ -1,4 +1,4 @@
-const Product = require('../models/products.models'); 
+const Product = require('../models/products.models');
 class ProductDAO {
   async getAllProducts() {
     try {
@@ -57,7 +57,7 @@ class ProductDAO {
       throw new Error('Error deleting product');
     }
   }
-  
+
   async getProductsByQuery(queryParams) {
     const { limit = 10, page = 1, sort = 'asc', query = '' } = queryParams;
     const skip = (page - 1) * limit;

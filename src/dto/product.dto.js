@@ -1,5 +1,5 @@
 class ProductDTO {
-  constructor(id,title, price, description, code, status, stock, category, thumbnails) {
+  constructor(id, title, price, description, code, status, stock, category, thumbnails) {
     this.id = id
     this.title = title;
     this.price = price;
@@ -13,4 +13,3 @@ class ProductDTO {
 }
 
 module.exports = ProductDTO;
-  

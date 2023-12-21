@@ -38,7 +38,7 @@ class UsuarioDAO {
       return await Usuarios.findOne({
         $and: [
           { _id: resetToken }
-          
+
         ]
       });
     } catch (error) {

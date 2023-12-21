@@ -2,21 +2,21 @@ const multer = require('multer');
 const mkdirp = require('mkdirp');
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const fileType = determineFileType(file);
+  destination: (req, files, cb) => {
+    const fileType = determineFileType(files);
     cb(null, `${process.cwd()}/src/public/img/image/${fileType}`);
 
     
   },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
+  filename: (req, files, cb) => {
+    cb(null, files.originalname);
   },
 });
 
 const uploader = multer({
   storage,
-  fileFilter: (req, file, cb) => {
-    if (file.fieldname === 'productThumbnails') { 
+  fileFilter: (req, files, cb) => {
+    if (files.fieldname === 'productThumbnails') { 
       cb(null, true);
     } else {
       cb(new Error('Unexpected field'), false);
@@ -24,7 +24,7 @@ const uploader = multer({
   },
 });
 
-function determineFileType(file) {
+function determineFileType(files) {
   const fileTypes = {
     'image/jpg': 'images',
     'image/png': 'images',
@@ -32,8 +32,9 @@ function determineFileType(file) {
     // Agrega más tipos según tus necesidades
     default: 'other',
   };
+  
 
-  return fileTypes[file.mimetype] || fileTypes.default;
+  return fileTypes[files.mimetype] || fileTypes.default;
 }
 
 module.exports = uploader;

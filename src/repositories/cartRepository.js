@@ -5,13 +5,13 @@ class CartRepository {
   constructor() {
     this.cartFactory = CartFactory.createCartDAO();
   }
-    async createCart() {
-      try {
-        return await this.cartFactory.createCart();
-      } catch (error) {
-        throw new Error('Error al crear un carrito');
-      }
+  async createCart() {
+    try {
+      return await this.cartFactory.createCart();
+    } catch (error) {
+      throw new Error('Error al crear un carrito');
     }
+  }
 
   async getAllCarts() {
     try {
@@ -38,4 +38,4 @@ class CartRepository {
   }
 }
 
-module.exports =  CartRepository;
+module.exports = CartRepository;

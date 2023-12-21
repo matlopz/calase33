@@ -15,26 +15,26 @@ const app = express();
 
 app.use(cookieParser())
 const hbs = handlebars.create({
- 
+
     allowProtoPropertiesByDefault: true
 });
 const swaggerOptions = {
     definition: {
-      openapi: '3.0.1',
-      info: {
-        title: 'Documentación de nuestra app mostrar los Productos',
-        description:
-          'Documentación que muestra todos los Productos del cliente',
-      },
+        openapi: '3.0.1',
+        info: {
+            title: 'Documentación de nuestra app mostrar los Productos',
+            description:
+                'Documentación que muestra todos los Productos del cliente',
+        },
     },
     apis: [`${__dirname}/docs/**/*.yaml`],
-  }
+}
 
-  const spec = swaggerJSDoc(swaggerOptions)
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec))
+const spec = swaggerJSDoc(swaggerOptions)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec))
 
 app.use(cors());
-// Middleware para procesar JSON 
+
 app.use(express.json());
 app.use(logger)
 app.use(express.urlencoded({ extended: true }));
@@ -43,12 +43,12 @@ app.engine('handlebars', hbs.engine);
 app.engine('handlebars', handlebars.engine({
 
     runtimeOptions: {
-    
-    allowProtoPropertiesByDefault: true,
-    
+
+        allowProtoPropertiesByDefault: true,
+
     },
-    
-    }))
+
+}))
 app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
 

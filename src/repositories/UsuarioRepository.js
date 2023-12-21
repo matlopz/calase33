@@ -15,7 +15,7 @@ class UsuarioRepository {
 
   async addPasswordResetToken(email, resetToken) {
     try {
-      // Asumo que tienes un método en tu DAO para actualizar el usuario con el token
+
       return await this.usuarioDAO.addPasswordResetToken(email, resetToken);
     } catch (error) {
       throw new Error('Error al agregar el token de restablecimiento de contraseña');

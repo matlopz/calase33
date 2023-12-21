@@ -1,5 +1,5 @@
-class UserDto{
-    constructor(NewUser){
+class UserDto {
+    constructor(NewUser) {
         this.name = NewUser.name
         this.lastname = NewUser.lastname
         this.age = NewUser.age

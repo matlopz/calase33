@@ -20,18 +20,10 @@ router.get('/:resetToken', async (req, res) => {
 });
 
 router.post('/:resetToken',authToken, async (req, res) => {
-    try {
-        // En lugar de desestructurar resetToken y newPassword del cuerpo de la solicitud (req.body),
-        // ya los tienes disponibles como parámetros (resetToken) y puedes obtener newPassword directamente del formulario.
-       
+    try {     
         const {newPassword} = req.body;
         const userId = req.user;
         const resetToken =userId;
-
-        console.log('UserId obtenido del token:', userId); // Asegúrate de tener el campo correcto en el cuerpo de la solicitud.
-
-
-        console.log('newPassword recibido desde el cliente:', newPassword);
 
         await usuarioService.restablecerContraseñaConToken(resetToken, newPassword);
 

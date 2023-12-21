@@ -12,10 +12,8 @@ router.post('/register', passport.authenticate('register', { failureRedirect: '/
   async (req, res) => {
 
     try {
-   
       res.status(201).json({ status: 'success', payload: req.user });
     } catch (error) {
-      console.log(error);
       res.status(500).json({ status: 'error', error: 'Internal Server Error' })
 
     }
@@ -28,59 +26,23 @@ router.get('/failregister', (req, res) => {
 
 router.get('/login', (req, res) => {
   res.render('login')
-  
+
 })
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(req.body);
-
     const { user, token } = await usuarioService.validateUser({ email, password });
-    console.log('¿Qué tiene el token:', token);
-
     if (!user) {
-      
       res.status(401).json({ status: 'error', error: 'Invalid credentials' });
     } else {
       res.json({ status: 'success', payload: 'New session initialized', token, user });
     }
   } catch (error) {
-    console.error(error);
+
     res.status(500).json({ status: 'error', error: 'Internal Server Error' });
   }
 });
 
-
-
-
-/*router.post('/login', async (req, res) => {
-  try {
-    const { email, password } = req.body
-
-    const user = await Usuarios.findOne({ email })
-    if (!user) {
-      return res.status(400).json({ status: 'error', error: 'credenciales Invalidas' })
-    }
-    if (!comparePassword(password, user.password)) {
-      return res.status(400).json({ status: 'error', error: 'credenciales Invalidas' })
-    }
-    req.user = {
-      name: user.name,
-      id: user.id
-    }
-    const token = generateToken(user._id)
-    console.log('Token generado: ', token)
-
-    console.log('Inicio de sesión exitoso', req.user);
-    res
-      .cookie('authCookie', token, { maxAge: 15000, httpOnly: true })
-      .json({ status: 'success', payload: 'Inicio de Session Correcto', token });
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ status: 'error', error: 'Internal Server Error' });
-  }
-});*/
 
 router.get('/failLogin', (req, res) => {
   res.json({ status: 'Error', error: 'fallo al loguearse' });
@@ -92,20 +54,13 @@ router.get('/github', passport.authenticate('github', { scope: ['user: email'] }
 
 router.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
   try {
-    //const cartId = user.cart[0].product.toString();
-
     req.user = {
       name: user.name,
       id: user.id
-
     }
-
-
-    console.log('Inicio de sesión exitoso', req.user);
     res.redirect('/views/productos')
-    //res.json({ status: 'success', payload: 'New session initialized' });
   } catch (error) {
-    console.error(error);
+
     res.status(500).json({ status: 'error', error: 'Internal Server Error' });
   }
 })

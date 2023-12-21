@@ -1,4 +1,4 @@
-const ProductDAO = require('../dao/product.Dao'); // Ajusta la importación según tu estructura de archivos.
+const ProductDAO = require('../dao/product.Dao');
 
 class ProductFactory {
   static createProductDAO() {

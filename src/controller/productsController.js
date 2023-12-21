@@ -13,7 +13,6 @@ router.get('/' ,async (req, res) => {
 
       return res.json({products})
       
-      //console.log('GET Products - Renderización exitosa');
     } catch (err) {
       console.error('GET Products - Error:', err);
       res.status(HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
@@ -25,7 +24,7 @@ router.get('/:pid', async (req, res) => {
     const pid = req.params.pid;
     const product = await productsService.getProductById(pid);
     if (product) {
-     // res.json(product);
+
  res.render(product)
     } else {
       res.status(404).json({ error: 'Product not found' });

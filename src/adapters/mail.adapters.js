@@ -1,7 +1,5 @@
 const { userMail } = require("../config");
 const transport = require("../utils/nodemailer");
-const { v4: uuidv4 } = require('uuid');
-
 const UsuarioRepository = require("../repositories/UsuarioRepository");
 const usuarioRepository = new UsuarioRepository()
 
@@ -18,17 +16,22 @@ class MailAdapter {
             `,
         });
     }
-
+    async sendDeletedProduct(messageInfo) {
+        await transport.sendMail({
+            from: userMail,
+            to: messageInfo.email,
+            subject: `${messageInfo.name} Productos Eliminado`,
+            html: `
+                <div>
+                    <h1>Hola ${messageInfo.lastname}, el producto eliminado es ID: ${messageInfo.id} titulo: ${messageInfo.productName}</h1>
+                </div>
+            `,
+        });
+    }
     async sendPasswordResetEmail(messageInfo) {
-        // Generar un token único para la recuperación de contraseña
         const resetToken = messageInfo.resetToken
-
-        // Agregar el token y la expiración al usuario en la base de datos
         await usuarioRepository.addPasswordResetToken(messageInfo.email, resetToken);
-
         const resetLink = `http://localhost:8080/reset-password/${resetToken}`;
-
-        // Enviar el correo de recuperación de contraseña
         await transport.sendMail({
             from: userMail,
             to: messageInfo.email,
@@ -42,7 +45,9 @@ class MailAdapter {
             `,
         });
     }
+
+
 }
 
-// Exportar la instancia de MailAdapter
+
 module.exports = MailAdapter;

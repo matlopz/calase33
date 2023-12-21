@@ -13,7 +13,7 @@ const productSchema = new mongoose.Schema({
   stock: String,
   category: String,
   thumbnails: {
-    type: [String], // Ahora es un array de strings
+    type: [String],
     required: true,
   },
   owner: String,
