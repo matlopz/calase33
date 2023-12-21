@@ -1,6 +1,7 @@
 const express = require('express');
 const passport = require('passport')
 const UsuarioService = require('../services/usuarioService');
+const UserDto = require('../dto/user.dto');
 const router = express.Router();
 const usuarioService = new UsuarioService()
 
@@ -8,11 +9,23 @@ router.get('/register', (req, res) => {
   res.render('register')
 })
 
-router.post('/register', passport.authenticate('register', { failureRedirect: '/failregister' }),
-  async (req, res) => {
+router.post('/register',async (req, res) => {
+    try { 
+      const { name, lastname, email, age, number,username, password } = req.body;
 
-    try {
-      res.status(201).json({ status: 'success', payload: req.user });
+      await usuarioService.validarEmail({ email: username });
+      const userDto = new UserDto({
+        name,
+        lastname,
+        email,
+        age,
+        password,
+        number,
+      });
+      const newUser = await usuarioService.createUser(userDto);
+
+
+      res.status(201).json({ status: 'success', payload: 'Usuario Creado Correctamente',newUser });
     } catch (error) {
       res.status(500).json({ status: 'error', error: 'Internal Server Error' })
 

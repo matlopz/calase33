@@ -1,3 +1,5 @@
+
+
 const registerForm = document.getElementById('registerForm');
 const responseRegister = document.getElementById('responseRegister');
 
@@ -19,13 +21,18 @@ registerForm.addEventListener('submit', async (e) => {
     });
 
     const newUserResponse = await response.json();
+    console.log('New User Tiene::', newUserResponse, newUserResponse.newUser)
 
-    if (newUserResponse && newUserResponse.payload && newUserResponse.payload._id && newUserResponse.cartId) {
-      responseRegister.innerText = `El nuevo usuario tiene id ${newUserResponse.payload._id} y cartId ${newUserResponse.cartId}`;
+    if (newUserResponse && newUserResponse.payload) {
+      responseRegister.innerText = `El Usuario se creo Correctamente`;
+      setTimeout(() => {
+        window.location.href = '/auth/login';
+      }, 6000);
+      
     } else {
       responseRegister.innerText = 'La respuesta del servidor es inválida o no contiene _id o cartId.';
     }
-    
+
   } catch (error) {
     responseRegister.innerText = `Tenemos un error ${error}`;
   }
