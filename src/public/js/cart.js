@@ -98,7 +98,6 @@ const setupAddToCartButtons = async () => {
         const producto = await response.json();
 
         const { cartId } = producto
-        //const cartId = cartIdValue
         console.log('carrito id:', cartId)
         console.log('Valor del nuevo cart ID:', cartId);
 

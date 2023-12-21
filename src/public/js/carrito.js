@@ -6,11 +6,7 @@ const fetchData = async () => {
         console.log('No se encontró un token de autorización en el almacenamiento local.');
         return;
     }
- 
-
-
 };
-
 
 async function incrementQuantity(productId) {
     const quantityElement = document.getElementById(`quantity_${productId}`);
@@ -23,7 +19,6 @@ async function incrementQuantity(productId) {
     const cartId = partesURL[partesURL.length - 1];
 
     if (cartId) {
-      
         try {
             const response = await fetch(`/views/carts/product/${productId}/increment`, {
                 method: 'POST',
@@ -34,9 +29,9 @@ async function incrementQuantity(productId) {
                 body: JSON.stringify({ cartId: cartId }),
             });
             if (response.ok) {
-              
+
             } else {
-               
+
                 console.error('Error al incrementar la cantidad en el carrito');
             }
         } catch (error) {
@@ -50,7 +45,7 @@ async function incrementQuantity(productId) {
 
 async function deleteProductAndReload(productId, cartId) {
     try {
-        console.log('que tienen estos valors',cartId,)
+        console.log('que tienen estos valors', cartId,)
         const response = await fetch(`/views/carts/product/${productId}/delete`, {
             method: 'POST',
             headers: {
@@ -61,7 +56,7 @@ async function deleteProductAndReload(productId, cartId) {
         });
 
         if (response.ok) {
-            
+
             setTimeout(() => {
                 window.location.reload();
             }, 100);
@@ -81,9 +76,9 @@ async function decrementQuantity(productId) {
         currentQuantity -= 1;
         quantityElement.textContent = currentQuantity;
 
-    const urlActual = window.location.href;
-    const partesURL = urlActual.split('/');
-    const cartId = partesURL[partesURL.length - 1];
+        const urlActual = window.location.href;
+        const partesURL = urlActual.split('/');
+        const cartId = partesURL[partesURL.length - 1];
 
         if (currentQuantity === 0) {
             deleteProductAndReload(productId, cartId);
@@ -91,7 +86,7 @@ async function decrementQuantity(productId) {
             if (cartItem) {
                 cartItem.remove();
             }
-           
+
         } else {
             try {
                 const response = await fetch(`/views/carts/product/${productId}/decrement`, {
@@ -117,80 +112,77 @@ async function finalizePurchase() {
     const urlActual = window.location.href;
     const partesURL = urlActual.split('/');
     const cartId = partesURL[partesURL.length - 1];
-    
+
     if (cartId) {
-      try {
-        const response = await fetch(`/views/carts/${cartId}/purchase`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-          },
-          body: JSON.stringify({ cartId: cartId }),
-        });
-  
-        if (response.ok) {
-       
-          const summary = await response.json();
-  
-          
-          const summaryModal = document.getElementById('purchaseSummaryModal');
-          const closeSummaryModal = document.getElementById('closeSummaryModal');
-          const modalContent = document.querySelector('.modal-content');
-          
-          closeSummaryModal.onclick = function() {
-            summaryModal.style.display = 'none';
-          }
-          
-          window.onclick = function(event) {
-            if (event.target == summaryModal) {
-              summaryModal.style.display = 'none';
+        try {
+            const response = await fetch(`/views/carts/${cartId}/purchase`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                },
+                body: JSON.stringify({ cartId: cartId }),
+            });
+
+            if (response.ok) {
+
+                const summary = await response.json();
+
+
+                const summaryModal = document.getElementById('purchaseSummaryModal');
+                const closeSummaryModal = document.getElementById('closeSummaryModal');
+                const modalContent = document.querySelector('.modal-content');
+
+                closeSummaryModal.onclick = function () {
+                    summaryModal.style.display = 'none';
+                }
+
+                window.onclick = function (event) {
+                    if (event.target == summaryModal) {
+                        summaryModal.style.display = 'none';
+                    }
+                }
+
+                const totalAmount = document.createElement('p');
+                totalAmount.textContent = `Total a Pagar: $${summary.ticket.amount}`;
+                modalContent.appendChild(totalAmount);
+
+                const code = document.createElement('p');
+                code.textContent = `Código de Ticket: ${summary.ticket.code}`;
+                modalContent.appendChild(code);
+
+                const purchaseDatetime = document.createElement('p');
+                purchaseDatetime.textContent = `Fecha de Compra: ${new Date(summary.ticket.purchase_datetime).toLocaleString()}`;
+                modalContent.appendChild(purchaseDatetime);
+
+                const purchaser = document.createElement('p');
+                purchaser.textContent = `Comprador: ${summary.ticket.purchaser}`;
+                modalContent.appendChild(purchaser);
+
+                // Añadir los productos del ticket
+                const products = document.createElement('ul');
+                products.textContent = 'Productos:';
+                summary.ticket.products.forEach((product) => {
+                    const productItem = document.createElement('li');
+                    productItem.textContent = `Nombre: ${product.product.title}, Precio: $${product.product.price}, Cantidad: ${product.quantity}`;
+                    products.appendChild(productItem);
+                });
+                modalContent.appendChild(products);
+
+
+                summaryModal.style.display = 'block';
+            } else {
+                console.error('Error al finalizar la compra');
+
             }
-          }
-          
-          // Agrega el contenido del resumen de la compra
-       
-const totalAmount = document.createElement('p');
-totalAmount.textContent = `Total a Pagar: $${summary.ticket.amount}`;
-modalContent.appendChild(totalAmount);
-
-
-const code = document.createElement('p');
-code.textContent = `Código de Ticket: ${summary.ticket.code}`;
-modalContent.appendChild(code);
-
-const purchaseDatetime = document.createElement('p');
-purchaseDatetime.textContent = `Fecha de Compra: ${new Date(summary.ticket.purchase_datetime).toLocaleString()}`;
-modalContent.appendChild(purchaseDatetime);
-
-const purchaser = document.createElement('p');
-purchaser.textContent = `Comprador: ${summary.ticket.purchaser}`;
-modalContent.appendChild(purchaser);
-
-// Añade los productos del ticket
-const products = document.createElement('ul');
-products.textContent = 'Productos:';
-summary.ticket.products.forEach((product) => {
-  const productItem = document.createElement('li');
-  productItem.textContent = `Nombre: ${product.product.title}, Precio: $${product.product.price}, Cantidad: ${product.quantity}`;
-  products.appendChild(productItem);
-});
-modalContent.appendChild(products);
-
-          
-          summaryModal.style.display = 'block';
-        } else {
-          console.error('Error al finalizar la compra');
-          
+        } catch (error) {
+            console.error('Error de red al finalizar la compra:', error);
         }
-      } catch (error) {
-        console.error('Error de red al finalizar la compra:', error);
-      }
     } else {
-      console.log('cartId es undefined. Verifica la URL.');
+        console.log('cartId es undefined. Verifica la URL.');
     }
-  }
-  
-  
-  
+}
+
+
+
 

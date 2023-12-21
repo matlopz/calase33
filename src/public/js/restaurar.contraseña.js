@@ -1,7 +1,5 @@
 let authToken;
 
-console.log('que tiene ', authToken);
-
 const getAuthToken = () => {
     const authToken = localStorage.getItem('authToken');
     console.log('que tiene authToken', authToken);
@@ -18,13 +16,8 @@ resetPasswordForm.addEventListener('submit', async e => {
     try {
         e.preventDefault();
 
-        // Utiliza directamente authToken en lugar de crear una nueva variable
-        
-
         const newPassword = resetPasswordForm.querySelector('input[name="newPassword"]').value;
-        console.log('que tiene newPassword', newPassword);
         const authToken = getAuthToken();
-        console.log('que tiene esta variable ',authToken)
         const body = JSON.stringify({
             newPassword: newPassword,
             resetToken: authToken,
@@ -33,7 +26,6 @@ resetPasswordForm.addEventListener('submit', async e => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
         };
-        console.log('que tiene body', body);
 
         const response = await fetch(`/reset-password/${resetToken}`, {
             headers,
@@ -45,7 +37,6 @@ resetPasswordForm.addEventListener('submit', async e => {
         console.log('que tiene result', result);
         responseResetPassword.innerText = result.message;
 
-        // Redirigir al usuario después de restablecer la contraseña si es exitoso
         if (result.status === 'success') {
             // window.location.href = '/auth/login';
         }

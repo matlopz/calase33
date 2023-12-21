@@ -1,5 +1,3 @@
-
-
 const registerForm = document.getElementById('registerForm');
 const responseRegister = document.getElementById('responseRegister');
 
@@ -28,7 +26,7 @@ registerForm.addEventListener('submit', async (e) => {
       setTimeout(() => {
         window.location.href = '/auth/login';
       }, 6000);
-      
+
     } else {
       responseRegister.innerText = 'La respuesta del servidor es inválida o no contiene _id o cartId.';
     }

@@ -1,4 +1,3 @@
-
 const loginForm = document.getElementById('loginForm')
 const responseLogin = document.getElementById('responseLogin')
 
@@ -12,7 +11,7 @@ loginForm.addEventListener('submit', async e => {
     formData.forEach((value, key) => (data[key] = value))
 
     const headers = {
-      
+
       'Content-Type': 'application/json',
 
     }
@@ -27,28 +26,25 @@ loginForm.addEventListener('submit', async e => {
 
     const newSession = await response.json()
 
-    console.log('datos del back token: ',newSession)
+
     const token = newSession.token
     const user = newSession.user.role
-    localStorage.setItem('authToken',token)
-    console.log('que tiene local Storage: ',token, user)
+    localStorage.setItem('authToken', token)
+
     if (newSession.status === 'success') {
       console.log('Inicio de sesión exitoso');
-     if(user !=='premium'){
-      window.location.href = '/views/productos';
-     }else{
-      window.location.href = '/realTimeProducts';
-     }
-    
+      if (user !== 'premium') {
+        window.location.href = '/views/productos';
+      } else {
+        window.location.href = '/realTimeProducts';
+      }
+
     } else {
       console.log('Error en el inicio de sesión');
     }
-    
-
 
     responseLogin.innerText = `${newSession.payload}`
   } catch (error) {
-    console.log(error)
     responseLogin.innerText = `Tenemos un error ${error.error}`
   }
 })
