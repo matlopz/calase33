@@ -22,6 +22,6 @@ router.use('/auth', authController)
 router.use('/mockingproducts',mockingproductsController)
 router.use('/forgot-password', forgotPasswordController);
 router.use('/reset-password', resetPasswordController); 
-
+router.use('/',viewsController);
 
 module.exports = () => router;

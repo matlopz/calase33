@@ -8,6 +8,10 @@ const { winstonlogger } = require('../utils/winston');
 
 const router = express.Router();
 
+router.get('/', (req, res) => {
+  
+  res.render('home');
+});
 
 router.get('/productos', async (req, res) => {
   return res.render('products')
