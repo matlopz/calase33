@@ -47,4 +47,7 @@ loginForm.addEventListener('submit', async e => {
   } catch (error) {
     responseLogin.innerText = `Tenemos un error ${error.error}`
   }
+  githubLoginButton.addEventListener('submite', () => {
+    window.location.href = '/auth/github'; 
+  });
 })

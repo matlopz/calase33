@@ -6,7 +6,7 @@ const generateToken = (user) => {
 };
 
 const authToken = (req, res, next) => {
-  // Determina si es una conexión de socket o una solicitud HTTP
+ 
   const isSocketConnection = req.hasOwnProperty('client');
 
   try {
@@ -27,7 +27,7 @@ const authToken = (req, res, next) => {
         next();
       });
     } else {
-      // Lógica de autenticación para solicitudes HTTP
+     
       const authHeader = req.headers.authorization;
 
       if (!authHeader) {

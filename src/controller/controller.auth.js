@@ -65,7 +65,7 @@ router.get('/github', passport.authenticate('github', { scope: ['user: email'] }
 
 })
 
-router.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
+router.get('/githubcallback',passport.authenticate('github', { scope: ['user: email'] }), async(req, res) => {
   try {
     req.user = {
       name: user.name,

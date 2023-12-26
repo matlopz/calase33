@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
+const appConfig = require('../config/index');
+const mongoDB = appConfig.mongoDB
 class MongoConnection {
     static #instance
+    
 
     constructor() {
         this.connect()
@@ -8,7 +11,7 @@ class MongoConnection {
 
     async connect() {
         try {
-            await mongoose.connect('mongodb+srv://matlopz:Dolo2018@product.n2gwuwa.mongodb.net/?retryWrites=true&w=majority')
+            await mongoose.connect(`${mongoDB}`)
             console.log('db conected')
         } catch (err) {
             console.log(err)
