@@ -6,18 +6,11 @@ const { authToken } = require('./utils/jwt');
 
 const initializeIO = (httpServer) => {
   const io = new Server(httpServer);
-  io.use((socket, next) => {
 
-    authToken(socket.request, {}, (err) => {
-      if (err) {
 
-        return next(new Error('Authentication error'));
-      }
-      next();
-    });
-  });
 
-  io.on('connection', async (socket) => {
+    io.on('connection', async (socket) => {
+    console.log(`Usuario conectado: ${socket.id}`);
 
 
     socket.on('message', async data => {
@@ -28,10 +21,18 @@ const initializeIO = (httpServer) => {
       io.emit('messageLogs', await Message.find().populate('user'));
     });
 
+    socket.on('auth', async data => {
+      const user = new User({ username: data });
+      await user.save();
+
+      io.emit('messageLogs', await Message.find().populate('user'));
+      socket.broadcast.emit('newUser', data);
+    });
+
 
   });
 
-  return io;
+ 
 };
 
 module.exports = initializeIO;
